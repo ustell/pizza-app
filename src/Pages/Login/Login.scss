@@ -1,0 +1,50 @@
+.login {
+}
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.error {
+  padding: 15px 0;
+  color: #fe724c;
+  text-align: center;
+}
+
+.input__form {
+  padding-top: 30px;
+  padding-bottom: 75px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.input__wrapper {
+}
+
+.input__label {
+  color: #c4c4c4;
+  font-size: 17px;
+  font-weight: 400;
+  padding-bottom: 5px;
+  display: block;
+}
+
+.form__btn {
+  margin-bottom: 30px;
+  cursor: pointer;
+}
+
+.login__hint {
+  display: block;
+  color: #5b5b5e;
+
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.login_to_reg {
+  color: #fe724c;
+  text-decoration: none;
+}
