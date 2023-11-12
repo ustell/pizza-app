@@ -1,13 +1,10 @@
 import React, { ReactNode } from 'react';
+import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { userAction } from '../store/user.slice';
+import { RootState } from '../store/store';
 
 export default function RequireAuth({ children }: { children: ReactNode }) {
-  const dispatch = useDispatch();
-
-  const jwt = localStorage.getItem('jwt');
-  dispatch(userAction.delJwt);
+  const jwt = useSelector((s: RootState) => s.user.jwt);
 
   if (!jwt) {
     return <Navigate to='/auth/login' replace />;

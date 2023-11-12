@@ -1,11 +1,22 @@
 import {PayloadAction, createSlice} from '@reduxjs/toolkit'
+import { loadState } from './storage';
+
+export const JWT_INITIAL = "userData"
 
 export  interface userState {
   jwt: string | null;
 }
 
+// store.subscribe(()=>{
+//   saveState({jwt: store.getState().user.jwt}, JWT_INITIAL);
+// }) берет инфу из interface userState 
+
+export  interface userInitial {
+  jwt: string | null;
+}
+
 const initialState: userState = {
-  jwt: null
+  jwt: loadState<userInitial>(JWT_INITIAL)?.jwt ?? null // получаем ключ userData
 }
 
 export const userSlice = createSlice({
