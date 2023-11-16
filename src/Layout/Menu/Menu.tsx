@@ -3,12 +3,16 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 
 import './Menu.scss';
 import Button from '../../componenst/Button/Button';
+import { useDispatch } from 'react-redux';
+import { AppDispath } from '../../store/store';
+import { userAction } from '../../store/user.slice';
 
 export default function Layout() {
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispath>();
 
   const ExitAcount = () => {
-    localStorage.removeItem('jwt');
+    dispatch(userAction.logout());
     navigate('/auth/login');
   };
 
