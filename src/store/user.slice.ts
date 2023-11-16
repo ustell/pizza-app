@@ -2,17 +2,16 @@ import {PayloadAction, createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import { loadState } from './storage';
 import axios, { AxiosError } from 'axios';
 import { LoginToken } from '../Interfase/Auth.interface';
+import { Profile } from '../Interfase/user.interface';
+import { RootState } from './store';
 
 export const JWT_INITIAL = "userData"
 
 export  interface userState {
   jwt: string | null;
   loginInvalid?: string    
+  profile?: Profile
 }
-
-// store.subscribe(()=>{
-//   saveState({jwt: store.getState().user.jwt}, JWT_INITIAL);
-// }) берет инфу из interface userState 
 
 export  interface userInitial {
   jwt: string | null;
@@ -23,7 +22,7 @@ const initialState: userState = {
 }
 
 export const login = createAsyncThunk("user/login", 
-async (params: {email: string; password: string})=> {
+  async (params: {email: string; password: string})=> {
       try {
         const { data } = await axios.post<LoginToken>(
           'https://purpleschool.ru/pizza-api-demo/auth/login',
@@ -39,7 +38,22 @@ async (params: {email: string; password: string})=> {
         throw new Error(error.response?.data.message);
       }
     }
-    
+  }
+)
+
+
+export const getProfile = createAsyncThunk<Profile, void, {state: RootState}>("user/getProfile", 
+  async (_, thunkApi) => {
+    const jwt = thunkApi.getState().user.jwt
+    const { data } = await axios.get<Profile>(
+          'https://purpleschool.ru/pizza-api-demo/user/profile',
+          {
+          headers: {
+            Authorization:`Bearer ${jwt}`
+          }
+          },
+        );
+        return data
   }
 )
 
@@ -67,7 +81,11 @@ export const userSlice = createSlice({
      builder.addCase(login.rejected, (state, action) =>{
       state.loginInvalid = action.error.message
     })
-    }
+     builder.addCase(getProfile.fulfilled, (state, action) =>{
+      state.profile = action.payload;
+    })
+    
+  },
 })
 
 export default userSlice.reducer

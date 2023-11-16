@@ -1,15 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 
 import './Menu.scss';
 import Button from '../../componenst/Button/Button';
-import { useDispatch } from 'react-redux';
-import { AppDispath } from '../../store/store';
-import { userAction } from '../../store/user.slice';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispath, RootState } from '../../store/store';
+import { getProfile, userAction } from '../../store/user.slice';
 
 export default function Layout() {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispath>();
+  const profile = useSelector((s: RootState) => s.user.profile);
+
+  useEffect(() => {
+    dispatch(getProfile());
+  }, []);
 
   const ExitAcount = () => {
     dispatch(userAction.logout());
@@ -25,8 +30,8 @@ export default function Layout() {
               <img src='./avatar.png' alt='' />
             </div>
             <div className='user__info'>
-              <h2 className='user__info-name'> Барабанов Олег </h2>
-              <h2 className='user__info-email'> Boleg748@gmail.com </h2>
+              <h2 className='user__info-name'> {profile?.name} </h2>
+              <h2 className='user__info-email'> {profile?.email} </h2>
             </div>
           </div>
 

@@ -1,9 +1,6 @@
-import React, { FormEvent, useEffect, useState } from 'react';
-import axios, { AxiosError } from 'axios';
+import React, { FormEvent, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-
-import { LoginToken } from '../../Interfase/Auth.interface';
 
 import Button from '../../componenst/Button/Button';
 import Headling from '../../componenst/Headling/Headling';
@@ -23,7 +20,6 @@ export type LoginForm = {
 };
 
 export default function Login() {
-  const [error, setError] = useState<string | null>();
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispath>();
   const { jwt, loginInvalid } = useSelector((s: RootState) => s.user);
@@ -39,28 +35,12 @@ export default function Login() {
     const target = e.target as typeof e.target & LoginForm;
 
     const { email, password } = target;
-    setError(null);
     dispatch(userAction.clearLoginError());
     await sendLogin(email.value, password.value);
   };
 
   const sendLogin = async (email: string, password: string) => {
     dispatch(login({ email, password }));
-    // try {
-    //   const { data } = await axios.post<LoginToken>(
-    //     'https://purpleschool.ru/pizza-api-demo/auth/login',
-    //     {
-    //       email,
-    //       password,
-    //     },
-    //   );
-    //   dispatch(userAction.addJwt(data.access_token));
-    //   navigate('/');
-    // } catch (e) {
-    //   if (e instanceof AxiosError) {
-    //     setError(e.response?.data.message);
-    //   }
-    // }
   };
 
   return (
