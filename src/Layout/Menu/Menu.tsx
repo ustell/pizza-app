@@ -44,10 +44,13 @@ export default function Layout() {
               </li>
               <li>
                 <img src='./card.svg' alt='card' />
-                <NavLink to={'/card'}>Корзина</NavLink>
-                <p className='menu__count'>
+                <NavLink to={'/shifrovanie'}>shifrovanie</NavLink>
+                {/* <p className='menu__count'>
                   {countItems?.reduce((acc, item) => (acc += item.count), 0)}
-                </p>
+                </p> */}
+              </li>
+              <li>
+                <NavLink to={'/click'}>click</NavLink>
               </li>
             </ul>
           </nav>

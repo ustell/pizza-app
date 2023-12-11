@@ -16,6 +16,7 @@ import Register from './Pages/Register/Register.tsx';
 import RequireAuth from './helpers/RequireAuth.tsx';
 import { Provider } from 'react-redux';
 import { store } from './store/store.ts';
+import Delete from './Pages/delete/Delete.tsx';
 
 const Menu = lazy(() => import('./Pages/Menu/Menu.tsx'));
 
@@ -37,9 +38,14 @@ const router = createBrowserRouter([
         ), // suspense нужен для того чтоб упросить нагрузку на сайт то есть загрузка будет происходить только после того как кто юзер зашел на страницу
       },
       {
-        path: '/card',
+        path: '/shifrovanie',
         element: <Card />,
       },
+      {
+        path: '/click',
+        element: <Delete />,
+      },
+
       {
         path: '*',
         element: <Error />,
