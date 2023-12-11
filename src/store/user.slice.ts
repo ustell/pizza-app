@@ -1,9 +1,10 @@
-import {PayloadAction, createAsyncThunk, createSlice} from '@reduxjs/toolkit'
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import { loadState } from './storage';
 import axios, { AxiosError } from 'axios';
 import { LoginToken } from '../Interfase/Auth.interface';
 import { Profile } from '../Interfase/user.interface';
 import { RootState } from './store';
+import { Register } from '../Interfase/Register.interface';
 
 export const JWT_INITIAL = "userData"
 
@@ -11,6 +12,7 @@ export  interface userState {
   jwt: string | null;
   loginInvalid?: string    
   profile?: Profile
+  registerInvalid?: string
 }
 
 export  interface userInitial {
@@ -57,18 +59,32 @@ export const getProfile = createAsyncThunk<Profile, void, {state: RootState}>("u
   }
 )
 
+export const register = createAsyncThunk("user/register", 
+  async (params: {email: string; password: string, name: string})=> {
+    const { data } = await axios.post<Register>(
+      'https://purpleschool.ru/pizza-api-demo/auth/register',
+      {
+        email: params.email,
+        password: params.password,
+        name: params.name,
+      },
+    );
+    return data
+  }
+)
+
 export const userSlice = createSlice({
   name: 'user',
   initialState: initialState,
   reducers: {
-    addJwt : (state, action: PayloadAction<string>) => {
-      state.jwt = action.payload
+    logout : (state) => {
+      state.jwt = null
     },
     clearLoginError: (state)=>{
       state.loginInvalid = undefined 
     },
-    logout : (state) => {
-      state.jwt = null
+    clearRegisterInvalid:(state)=>{
+      state.registerInvalid = undefined
     }
   },
   extraReducers: (builder) => {
@@ -83,6 +99,15 @@ export const userSlice = createSlice({
     })
      builder.addCase(getProfile.fulfilled, (state, action) =>{
       state.profile = action.payload;
+    })
+     builder.addCase(register.fulfilled, (state, action) =>{
+      if (!action.payload) {
+        return
+      }
+      state.jwt= action.payload.access_token;
+    })
+    builder.addCase(register.rejected, (state, action) =>{
+      state.registerInvalid = action.error.message
     })
     
   },

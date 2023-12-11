@@ -1,0 +1,45 @@
+.cardItem {
+  width: 512px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.card__info {
+  display: flex;
+}
+
+.card__info-img {
+  width: 82px;
+  height: 82px;
+}
+
+.card__info-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.card__info-name {
+}
+
+.card__info-price {
+}
+
+.card__interactions {
+}
+
+.card__interactions-button {
+  display: flex;
+}
+
+.btn__count {
+  padding: 9px 13px;
+  border-radius: 50%;
+  border: 1px solid #fe724c;
+  &img {
+    object-fit: cover;
+  }
+}
+
+.dell {
+}

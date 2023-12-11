@@ -11,10 +11,11 @@ export default function Layout() {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispath>();
   const profile = useSelector((s: RootState) => s.user.profile);
+  const countItems = useSelector((s: RootState) => s.card.items);
 
   useEffect(() => {
     dispatch(getProfile());
-  }, []);
+  }, [dispatch]);
 
   const ExitAcount = () => {
     dispatch(userAction.logout());
@@ -44,7 +45,9 @@ export default function Layout() {
               <li>
                 <img src='./card.svg' alt='card' />
                 <NavLink to={'/card'}>Корзина</NavLink>
-                <p className='menu__count'>2</p>
+                <p className='menu__count'>
+                  {countItems?.reduce((acc, item) => (acc += item.count), 0)}
+                </p>
               </li>
             </ul>
           </nav>

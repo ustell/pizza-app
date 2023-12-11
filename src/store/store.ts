@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userSlice, { JWT_INITIAL } from "./user.slice";
 import { saveState } from "./storage";
+import cardSlice from "./card.slice";
 
 export const store = configureStore({
   reducer: {
-    user: userSlice
+    user: userSlice,
+    card: cardSlice
   }
 })
 

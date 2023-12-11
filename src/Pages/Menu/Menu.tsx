@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import axios, { AxiosError } from 'axios';
 
 import Input from '../../componenst/Input/Input';
@@ -12,18 +12,26 @@ export default function Menu() {
   const [product, setProduct] = React.useState<Product[]>([]);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | undefined>();
+  const [filter, setFilter] = useState<string>();
 
-  const getProduct = async () => {
+  useEffect(() => {
+    getProduct(filter);
+  }, [filter]);
+
+  const getProduct = async (name?: string) => {
     try {
       setLoading(true);
       await new Promise<void>((res) => {
         setTimeout(() => {
           res();
-        }, 2000);
+        }, 1000);
       });
 
       const { data } = await axios.get<Product[]>(
-        'https://purpleschool.ru/pizza-api-demo/products',
+        `https://purpleschool.ru/pizza-api-demo/products`,
+        {
+          params: { name },
+        },
       );
 
       setProduct(data);
@@ -37,15 +45,15 @@ export default function Menu() {
     }
   };
 
-  useEffect(() => {
-    getProduct();
-  }, []);
+  const updateFilter = (e: ChangeEvent<HTMLInputElement>) => {
+    setFilter(e.target.value);
+  };
 
   return (
     <>
       <div className='header__top'>
         <Headling>Меню</Headling>
-        <Input placeholder='Введите блюдо или состав' />
+        <Input placeholder='Введите блюдо или состав' onChange={updateFilter} />
       </div>
       <div className='menu__category'>
         {error && <>{error}</>}
@@ -62,6 +70,7 @@ export default function Menu() {
             />
           ))}
         {loading && <p>Загрузка пицц</p>}
+        {!loading && product.length === 0 && <p>Не найдено таких блюд</p>}
       </div>
     </>
   );
